@@ -1,0 +1,22 @@
+AllCops:
+  TargetRubyVersion: 2.5.1
+  Exclude:
+    - db/*
+    - bin/*
+    - vendor/bundle/**/*
+    - spec/spec_helper.rb
+    - spec/rails_helper.rb
+    - config/*
+    - config/**/*
+    - Gemfile
+    - Rakefile
+    - config.ru
+
+Rails:
+  Enabled: true
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
