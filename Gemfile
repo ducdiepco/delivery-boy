@@ -59,3 +59,7 @@ end
 gem 'dry-monads'
 gem 'dry-transaction'
 gem 'dry-validation'
+
+
+# rabbitmq
+gem 'sneakers', '~> 2.11.0'

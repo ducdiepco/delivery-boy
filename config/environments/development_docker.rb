@@ -19,7 +19,7 @@ Rails.application.configure do
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
-      'Cache-Control' => "public, max-age=#{2.days.to_i}"
+        'Cache-Control' => "public, max-age=#{2.days.to_i}"
     }
   else
     config.action_controller.perform_caching = false
@@ -44,7 +44,6 @@ Rails.application.configure do
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 
-
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
@@ -54,10 +53,10 @@ Rails.application.configure do
 
   # RabbitMq
   config.x.rabbitmq_settings = {
-      username: 'guest',
-      password: 'guest',
-      host: '127.0.0.1',
-      vhost: '/',
-      port: 5672
+      username: ENV['RABBIT_USERNAME'],
+      password: ENV['RABBIT_PASSWORD'],
+      host: ENV['RABBIT_HOST'],
+      vhost: ENV.fetch('RABBIT_VHOST', '/'),
+      port: ENV.fetch('RABBIT_PORT', 5672)
   }
 end
