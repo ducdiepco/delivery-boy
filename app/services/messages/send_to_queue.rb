@@ -1,9 +1,10 @@
 module Messages
   class SendToQueue
     include Dry::Transaction
+    include SchemaValidated
     include ModelErrorMessageFormatter
 
-    ValidationSchema = Dry::Validation.Schema do
+    @validation_schema = Dry::Validation.Schema do
       required(:message).filled(type?: Message)
       required(:sender).filled
     end
@@ -14,10 +15,6 @@ module Messages
     map  :send_to_right_queue
 
     private
-
-    def validate_input(input)
-      ValidationSchema.call(input).to_monad
-    end
 
     def check_message_status(input)
       return Success(input) if input[:message].pending?
@@ -36,7 +33,7 @@ module Messages
       if message.time_to_deliver && Time.zone.now < message.time_to_deliver
         sender.send_to_delayed_queue(message.id, message.time_to_deliver)
       else
-        sender.send_to_queue(message.id)
+        sender.send_to_queue(message.id.to_s)
       end
     end
   end

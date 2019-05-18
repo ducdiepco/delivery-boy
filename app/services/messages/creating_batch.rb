@@ -1,9 +1,10 @@
 module Messages
   class CreatingBatch
     include Dry::Transaction
+    include SchemaValidated
     include ModelErrorMessageFormatter
 
-    ValidationSchema = Dry::Validation.Schema do
+    @validation_schema = Dry::Validation.Schema do
       configure { config.input_processor = :sanitizer }
 
       required(:body).filled(:str?, size?: 1..500)
@@ -25,10 +26,6 @@ module Messages
     step :save_models
 
     private
-
-    def validate_input(input)
-      ValidationSchema.call(input).to_monad
-    end
 
     def build_models_hash(body:, consumers_info:)
       indexed_models = consumers_info.each_with_object(index: 0, res_hash: {}) do |el, res_hash|

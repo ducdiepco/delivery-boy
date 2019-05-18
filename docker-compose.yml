@@ -41,6 +41,25 @@ services:
     depends_on:
       - db
       - queue
+  sneakers:
+    build: .
+    command: bash -c 'bundle exec rake sneakers:run'
+    environment:
+      - RACK_ENV=development_docker
+      - RAILS_ENV=development_docker
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - RABBIT_USERNAME=guest
+      - RABBIT_PASSWORD=guest
+      - RABBIT_HOST=queue
+      - RABBIT_PORT=5672
+      - DATABASE_PASSWORD=delivery
+      - DATABASE_USERNAME=delivery
+    volumes:
+      - .:/myapp
+    depends_on:
+      - db
+      - queue
 
 volumes:
   postgres:

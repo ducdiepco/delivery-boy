@@ -26,3 +26,6 @@ Metrics/LineLength:
 
 Metrics/BlockLength:
   Enabled: false
+
+Style/AsciiComments:
+  Enabled: false
