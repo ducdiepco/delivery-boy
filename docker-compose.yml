@@ -23,6 +23,7 @@ services:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && rake db:migrate && bundle exec rails s -p 3000 -b '0.0.0.0'"
     environment:
+      - SECRET_KEY_BASE=5a52a70e4938e781e44740db09f3995129bfd876517b38cb726860e297fa453a091788369dadfbc627074222a6303aa5d5197872c242c6f91f720dbbe09f1e20
       - RABBITMQ_URL=amqp://guest:guest@queue:5672
       - RACK_ENV=development_docker
       - RAILS_ENV=development_docker
@@ -45,6 +46,7 @@ services:
     build: .
     command: bash -c './waits-for queue:5672 -- bundle exec rake sneakers:run'
     environment:
+      - SECRET_KEY_BASE=5a52a70e4938e781e44740db09f3995129bfd876517b38cb726860e297fa453a091788369dadfbc627074222a6303aa5d5197872c242c6f91f720dbbe09f1e20
       - RABBITMQ_URL=amqp://guest:guest@queue:5672
       - RACK_ENV=development_docker
       - RAILS_ENV=development_docker
