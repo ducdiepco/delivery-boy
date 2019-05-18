@@ -14,6 +14,10 @@ module Api
       end
     end
 
+    def show
+      render json: Message.find(params[:id]), status: :ok
+    end
+
     private
 
     def create_params

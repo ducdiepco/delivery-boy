@@ -87,4 +87,35 @@ RSpec.describe 'Messages API', type: :request do
       end
     end
   end
+
+  describe 'GET /api/messages/:id' do
+    subject { get "/api/messages/#{id}" }
+
+    let(:message) { create(:message, :pending) }
+    let(:id) { message.id }
+
+    context 'when the record exists' do
+      before { subject }
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns the record in the json format' do
+        response_body = JSON.parse(response.body).symbolize_keys
+
+        expect(response_body[:id]).to eq(message.id)
+        expect(response_body[:body]).to eq(message.body)
+        expect(response_body[:messenger_user_id]).to eq(message.messenger_user_id)
+      end
+    end
+
+    context 'when the record doesnt exist' do
+      let(:id) { 300_000 }
+
+      it 'returns status code 404' do
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
 end
