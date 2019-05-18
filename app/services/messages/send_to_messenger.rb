@@ -15,7 +15,7 @@ module Messages
     private
 
     def check_message_status(message:)
-      return Failure("wrong status of the message: #{message.status}") unless message.pending?
+      return Failure("wrong status of the message: #{message.status}") unless message.in_queue?
 
       Success(message: message)
     end

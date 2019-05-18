@@ -1,7 +1,6 @@
 version: '2'
 services:
   db:
-    #: always
     image: 'postgres:10.3-alpine'
     ports:
       - "5432:5432"
@@ -24,6 +23,7 @@ services:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && rake db:migrate && bundle exec rails s -p 3000 -b '0.0.0.0'"
     environment:
+      - RABBITMQ_URL=amqp://guest:guest@queue:5672
       - RACK_ENV=development_docker
       - RAILS_ENV=development_docker
       - DATABASE_HOST=db
@@ -43,8 +43,9 @@ services:
       - queue
   sneakers:
     build: .
-    command: bash -c 'bundle exec rake sneakers:run'
+    command: bash -c './waits-for queue:5672 -- bundle exec rake sneakers:run'
     environment:
+      - RABBITMQ_URL=amqp://guest:guest@queue:5672
       - RACK_ENV=development_docker
       - RAILS_ENV=development_docker
       - DATABASE_HOST=db
